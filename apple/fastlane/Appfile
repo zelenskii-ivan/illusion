@@ -1,0 +1,7 @@
+app_identifier("com.illusion.vpn")
+apple_id(ENV["FASTLANE_APPLE_ID"])      # ваш Apple ID (email)
+team_id(ENV["FASTLANE_TEAM_ID"])        # Team ID разработчика
+
+# App Store Connect API key (рекомендуется для CI вместо пароля):
+#   APP_STORE_CONNECT_API_KEY_ID, APP_STORE_CONNECT_ISSUER_ID,
+#   APP_STORE_CONNECT_API_KEY (содержимое .p8)

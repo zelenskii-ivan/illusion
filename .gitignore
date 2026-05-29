@@ -34,7 +34,21 @@ AppPackages/
 *.msix
 publish/
 
+# Fastlane
+apple/fastlane/report.xml
+apple/fastlane/Preview.html
+apple/fastlane/screenshots/**/*.png
+apple/fastlane/test_output/
+apple/build/
+vendor/bundle/
+.bundle/
+
+# Generated Xcode project (XcodeGen is source of truth)
+apple/IllUsionVPN.xcodeproj/
+
 # Secrets / keys
 *.pem
 *.key
+*.p8
+*.mobileprovision
 wg-keys/

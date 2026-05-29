@@ -1,0 +1,10 @@
+# Хранилище сертификатов и профилей (приватный git-репозиторий).
+git_url(ENV["MATCH_GIT_URL"])
+storage_mode("git")
+type("appstore")
+app_identifier([
+  "com.illusion.vpn",
+  "com.illusion.vpn.PacketTunnel",
+  "com.illusion.vpn.Widget"
+])
+# MATCH_PASSWORD — пароль шифрования хранилища (в переменных окружения / CI secret).

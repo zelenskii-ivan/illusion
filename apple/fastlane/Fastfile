@@ -1,0 +1,68 @@
+default_platform(:ios)
+
+PROJECT = "IllUsionVPN.xcodeproj"
+SCHEME = "IllUsionVPN"
+
+platform :ios do
+  desc "Сгенерировать Xcode-проект из project.yml (XcodeGen)"
+  lane :generate do
+    sh("which xcodegen > /dev/null || brew install xcodegen")
+    sh("cd .. && xcodegen generate")
+  end
+
+  desc "Прогнать юнит-тесты на симуляторе"
+  lane :test do
+    generate
+    run_tests(
+      project: PROJECT,
+      scheme: SCHEME,
+      devices: ["iPhone 15"],
+      clean: true,
+      code_coverage: true
+    )
+  end
+
+  desc "Собрать и выложить сборку в TestFlight"
+  lane :beta do
+    generate
+    setup_ci if ENV["CI"]
+
+    # App Store Connect API key из переменных окружения (CI-friendly).
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_API_KEY"]
+    )
+
+    # Подписи через match (хранилище сертификатов/профилей).
+    match(type: "appstore", readonly: ENV["CI"] == "true", api_key: api_key)
+
+    increment_build_number(
+      build_number: latest_testflight_build_number(api_key: api_key) + 1,
+      xcodeproj: PROJECT
+    )
+
+    build_app(
+      project: PROJECT,
+      scheme: SCHEME,
+      export_method: "app-store",
+      output_directory: "build",
+      clean: true
+    )
+
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Релиз в App Store (ручное ревью)"
+  lane :release do
+    beta
+    deliver(
+      submit_for_review: false,
+      automatic_release: false,
+      force: true
+    )
+  end
+end

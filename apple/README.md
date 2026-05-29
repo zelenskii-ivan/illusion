@@ -55,8 +55,32 @@ apple/
 └── PacketTunnelProvider/        # расширение туннеля (WireGuardKit)
 ```
 
+## Live Activity
+Виджет-расширение `IllUsionWidget` показывает статус подключения и таймер
+сессии на экране блокировки и в Dynamic Island. Атрибуты общие
+(`Shared/VPNActivityAttributes.swift`), управление — `LiveActivityController`,
+вызывается из `TunnelManager` при смене состояния. Требуется iOS 16.1+
+и `NSSupportsLiveActivities` (уже задан в `project.yml`).
+
+## Fastlane (CI / TestFlight)
+```bash
+cd apple
+bundle install
+bundle exec fastlane test     # тесты на симуляторе
+bundle exec fastlane beta     # сборка + загрузка в TestFlight
+```
+Перед `beta` задайте переменные окружения: `FASTLANE_APPLE_ID`,
+`FASTLANE_TEAM_ID`, ключ App Store Connect API
+(`APP_STORE_CONNECT_API_KEY_ID/ISSUER_ID/KEY`), а также `MATCH_GIT_URL`
+и `MATCH_PASSWORD` для подписей через `match`.
+
+## Доступность
+Ключевые контролы (кнопка подключения, переключатели, строки серверов,
+статус, статистика) имеют VoiceOver labels/values/hints. Текст использует
+системные стили шрифтов и масштабируется через Dynamic Type.
+
 ## Примечания
-- Backend по умолчанию — `http://localhost:8787` (см. `APIClient.baseURL`).
-  Для устройства замените на доступный по сети адрес/домен.
+- Backend по умолчанию — Debug `http://localhost:8787`, Release
+  `https://api.illusion.vpn` (см. `AppConfig`, build setting `ILLUSION_API_BASE_URL`).
 - Приватные ключи WireGuard генерируются на устройстве (`WireGuardKeys`),
   на сервер уходит только публичный ключ.
