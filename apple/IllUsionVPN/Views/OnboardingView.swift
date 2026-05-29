@@ -50,8 +50,7 @@ struct OnboardingView: View {
                         .tag(index)
                     }
                 }
-                .tabViewStyle(.page(indexDisplayMode: .always))
-                .indexViewStyle(.page(backgroundDisplayMode: .always))
+                .pagedTabStyle()
 
                 Button(action: next) {
                     Text(page == pages.count - 1 ? "Начать" : "Далее")

@@ -16,9 +16,17 @@ enum AppEnvironment {
 
     /// Демо-режим: без реального туннеля и без обязательного backend.
     static var isDemoMode: Bool {
-        // Принудительно можно включить через переменную окружения.
-        if ProcessInfo.processInfo.environment["ILLUSION_DEMO"] == "1" { return true }
+        // Принудительное управление через переменную окружения.
+        let flag = ProcessInfo.processInfo.environment["ILLUSION_DEMO"]
+        if flag == "1" { return true }
+        if flag == "0" { return false }
+        #if os(macOS)
+        // На macOS реальный туннель требует System/Network Extension и подписи,
+        // поэтому до их настройки приложение работает в демо-режиме.
+        return true
+        #else
         return isSimulator
+        #endif
     }
 
     /// Загрузка офлайн-списка серверов из ресурсов бандла.

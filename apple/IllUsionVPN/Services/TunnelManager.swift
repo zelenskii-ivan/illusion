@@ -166,6 +166,7 @@ final class TunnelManager: ObservableObject {
     // MARK: - Live Activity
 
     private func syncLiveActivity() {
+        #if os(iOS)
         guard #available(iOS 16.2, *) else { return }
         switch state {
         case .connecting, .connected:
@@ -177,6 +178,7 @@ final class TunnelManager: ObservableObject {
         case .disconnected, .failed:
             LiveActivityController.shared.end()
         }
+        #endif
     }
 
     private func updateState(from status: NEVPNStatus) {

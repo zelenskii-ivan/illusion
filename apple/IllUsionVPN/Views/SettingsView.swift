@@ -168,7 +168,7 @@ struct SettingsView: View {
                 get: { viewModel.settings.customDNS },
                 set: { newValue in viewModel.updateSettings { $0.customDNS = newValue } }
             ))
-            .textInputAutocapitalization(.never)
+            .noAutocapitalization()
             .autocorrectionDisabled()
             .foregroundStyle(.white)
         }
@@ -210,6 +210,6 @@ private struct MultihopExitView: View {
             }
         }
         .navigationTitle("Выходной сервер")
-        .navigationBarTitleDisplayMode(.inline)
+        .inlineNavigationTitle()
     }
 }

@@ -31,7 +31,7 @@ struct LoginView: View {
                 }
 
                 VStack(spacing: 14) {
-                    field("Email", text: $email, icon: "envelope.fill", keyboard: .emailAddress)
+                    field("Email", text: $email, icon: "envelope.fill")
                     secureField("Пароль", text: $password, icon: "lock.fill")
                 }
                 .glassCard()
@@ -78,12 +78,12 @@ struct LoginView: View {
         }
     }
 
-    private func field(_ title: String, text: Binding<String>, icon: String, keyboard: UIKeyboardType) -> some View {
+    private func field(_ title: String, text: Binding<String>, icon: String) -> some View {
         HStack(spacing: 12) {
             Image(systemName: icon).frame(width: 24).foregroundStyle(Theme.accent)
             TextField(title, text: text)
-                .keyboardType(keyboard)
-                .textInputAutocapitalization(.never)
+                .emailKeyboard()
+                .noAutocapitalization()
                 .autocorrectionDisabled()
                 .foregroundStyle(.white)
         }

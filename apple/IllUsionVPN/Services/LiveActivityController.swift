@@ -1,3 +1,4 @@
+#if os(iOS)
 import Foundation
 import ActivityKit
 
@@ -60,3 +61,4 @@ final class LiveActivityController {
         )
     }
 }
+#endif

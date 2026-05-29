@@ -47,10 +47,10 @@ struct ServerListView: View {
                 .refreshable { await viewModel.refreshServers() }
             }
             .navigationTitle("Серверы")
-            .navigationBarTitleDisplayMode(.large)
+            .largeNavigationTitle()
             .searchable(text: $query, prompt: "Страна или город")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .primaryAction) {
                     if viewModel.isLoading { ProgressView().tint(.white) }
                 }
             }

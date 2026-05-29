@@ -27,7 +27,23 @@ open IllUsionVPN.xcodeproj
 - все экраны и настройки работают.
 
 Демо-режим можно принудительно включить и на устройстве переменной
-окружения схемы `ILLUSION_DEMO=1`.
+окружения схемы `ILLUSION_DEMO=1` (или выключить значением `0`).
+
+### Вариант A′ — приложение для macOS ✅
+Тот же код собирается под macOS (13+) через отдельный таргет/схему
+**IllUsionVPNMac**:
+
+```bash
+cd apple
+xcodegen generate
+xcodebuild build -scheme IllUsionVPNMac -destination 'platform=macOS'
+# или: open IllUsionVPN.xcodeproj → схема IllUsionVPNMac → ⌘R
+```
+
+На macOS по умолчанию активен **демо-режим** (реальный туннель требует
+System/Network Extension и подписи). iOS-специфика (ActivityKit / Live
+Activity, постраничный TabView, клавиатуры) обёрнута в `#if os(iOS)` и
+кросс-платформенные модификаторы из `Views/PlatformModifiers.swift`.
 
 ### Вариант B — реальный WireGuard-туннель (устройство)
 1. В `project.yml` раскомментируйте зависимость
