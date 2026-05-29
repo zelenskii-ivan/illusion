@@ -39,15 +39,23 @@ jobs:
       - name: Generate Xcode project
         run: xcodegen generate
 
+      - name: Select simulator
+        run: |
+          DEVICE=$(xcrun simctl list devices available \
+            | grep -oE 'iPhone [0-9]+( Pro| Pro Max| Plus)?' \
+            | sort -t' ' -k2 -n -r | head -n1)
+          DEVICE=${DEVICE:-iPhone 15}
+          echo "Using simulator: $DEVICE"
+          echo "SIM_NAME=$DEVICE" >> "$GITHUB_ENV"
+
       - name: Build & test
         run: |
           set -o pipefail
           xcodebuild test \
             -project IllUsionVPN.xcodeproj \
             -scheme IllUsionVPN \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -destination "platform=iOS Simulator,name=${SIM_NAME}" \
             -resultBundlePath TestResults.xcresult \
-            -skipPackagePluginValidation \
             CODE_SIGNING_ALLOWED=NO
 
       - name: Upload test results

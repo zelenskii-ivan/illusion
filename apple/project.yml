@@ -27,10 +27,17 @@ settings:
       SWIFT_OPTIMIZATION_LEVEL: "-O"
       SWIFT_COMPILATION_MODE: wholemodule
 
-packages:
-  WireGuardKit:
-    url: https://github.com/WireGuard/wireguard-apple
-    branch: master
+# ВКЛЮЧЕНИЕ РЕАЛЬНОГО VPN-ТУННЕЛЯ:
+# Пакет WireGuardKit нужен только таргету PacketTunnelProvider (реальное
+# устройство + Team ID). По умолчанию он отключён, чтобы сборка приложения
+# в симуляторе и CI не зависела от тяжёлого Go-тулчейна wireguard-apple.
+# Раскомментируйте блок ниже вместе с таргетом PacketTunnelProvider и
+# зависимостью на него в таргете IllUsionVPN.
+#
+# packages:
+#   WireGuardKit:
+#     url: https://github.com/WireGuard/wireguard-apple
+#     branch: master
 
 targets:
   IllUsionVPN:
@@ -69,29 +76,35 @@ targets:
     #
     #   - target: PacketTunnelProvider
 
-  PacketTunnelProvider:
-    type: app-extension
-    platform: iOS
-    sources:
-      - path: PacketTunnelProvider
-    info:
-      path: PacketTunnelProvider/Info.plist
-      properties:
-        NSExtension:
-          NSExtensionPointIdentifier: com.apple.networkextension.packet-tunnel
-          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).PacketTunnelProvider
-    entitlements:
-      path: PacketTunnelProvider/PacketTunnelProvider.entitlements
-      properties:
-        com.apple.developer.networking.networkextension:
-          - packet-tunnel-provider
-        com.apple.security.application-groups:
-          - group.com.illusion.vpn
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.illusion.vpn.PacketTunnel
-    dependencies:
-      - package: WireGuardKit
+  # PacketTunnelProvider — таргет реального WireGuard-туннеля. Отключён по
+  # умолчанию (требует WireGuardKit + реальное устройство). Чтобы включить:
+  # 1) раскомментируйте блок `packages: WireGuardKit` выше;
+  # 2) раскомментируйте этот таргет;
+  # 3) раскомментируйте зависимость `- target: PacketTunnelProvider` в IllUsionVPN.
+  #
+  # PacketTunnelProvider:
+  #   type: app-extension
+  #   platform: iOS
+  #   sources:
+  #     - path: PacketTunnelProvider
+  #   info:
+  #     path: PacketTunnelProvider/Info.plist
+  #     properties:
+  #       NSExtension:
+  #         NSExtensionPointIdentifier: com.apple.networkextension.packet-tunnel
+  #         NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).PacketTunnelProvider
+  #   entitlements:
+  #     path: PacketTunnelProvider/PacketTunnelProvider.entitlements
+  #     properties:
+  #       com.apple.developer.networking.networkextension:
+  #         - packet-tunnel-provider
+  #       com.apple.security.application-groups:
+  #         - group.com.illusion.vpn
+  #   settings:
+  #     base:
+  #       PRODUCT_BUNDLE_IDENTIFIER: com.illusion.vpn.PacketTunnel
+  #   dependencies:
+  #     - package: WireGuardKit
 
   IllUsionWidgetExtension:
     type: app-extension
