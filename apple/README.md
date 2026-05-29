@@ -59,7 +59,7 @@ apple/
 Виджет-расширение `IllUsionWidget` показывает статус подключения и таймер
 сессии на экране блокировки и в Dynamic Island. Атрибуты общие
 (`Shared/VPNActivityAttributes.swift`), управление — `LiveActivityController`,
-вызывается из `TunnelManager` при смене состояния. Требуется iOS 16.1+
+вызывается из `TunnelManager` при смене состояния. Требуется iOS 16.2+
 и `NSSupportsLiveActivities` (уже задан в `project.yml`).
 
 ## Fastlane (CI / TestFlight)

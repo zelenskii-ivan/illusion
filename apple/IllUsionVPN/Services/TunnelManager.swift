@@ -166,7 +166,7 @@ final class TunnelManager: ObservableObject {
     // MARK: - Live Activity
 
     private func syncLiveActivity() {
-        guard #available(iOS 16.1, *) else { return }
+        guard #available(iOS 16.2, *) else { return }
         switch state {
         case .connecting, .connected:
             if let server = activeServer {

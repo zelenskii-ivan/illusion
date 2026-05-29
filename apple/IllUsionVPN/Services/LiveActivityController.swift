@@ -2,7 +2,8 @@ import Foundation
 import ActivityKit
 
 /// Управляет Live Activity статуса VPN (Lock Screen + Dynamic Island).
-@available(iOS 16.1, *)
+/// iOS 16.2+: используем content-based API (ActivityContent).
+@available(iOS 16.2, *)
 final class LiveActivityController {
     static let shared = LiveActivityController()
 
