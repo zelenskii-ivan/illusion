@@ -30,14 +30,18 @@ jobs:
         with:
           dotnet-version: "8.0.x"
 
-      - name: Restore
-        run: dotnet restore IllUsionVPN.sln -p:Platform=x64
+      # WinUI 3 / MrtCore PRI-таргеты загружают .NET Framework MSBuild-таски,
+      # поэтому собираем полноценным MSBuild.exe из Visual Studio, а не
+      # `dotnet build` (coreclr MSBuild не может загрузить такие таски — MSB4062).
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
       - name: Build (Release x64)
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Continue'
-          dotnet build IllUsionVPN.sln -c Release -p:Platform=x64 --no-restore *>&1 |
+          msbuild IllUsionVPN.sln -restore -m `
+            -p:Configuration=Release -p:Platform=x64 *>&1 |
             Tee-Object -FilePath build.log
           $code = $LASTEXITCODE
           if ($code -ne 0) {
