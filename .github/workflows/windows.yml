@@ -34,8 +34,24 @@ jobs:
         run: dotnet restore IllUsionVPN.sln -p:Platform=x64
 
       - name: Build (Release x64)
-        run: >
-          dotnet build IllUsionVPN.sln
-          -c Release
-          -p:Platform=x64
-          --no-restore
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Continue'
+          dotnet build IllUsionVPN.sln -c Release -p:Platform=x64 --no-restore *>&1 |
+            Tee-Object -FilePath build.log
+          $code = $LASTEXITCODE
+          if ($code -ne 0) {
+            Get-Content build.log |
+              Select-String -Pattern '(: error |error CS|error MSB|error WMC|error XLS|error NU)' |
+              Select-Object -Unique -First 40 |
+              ForEach-Object { Write-Host ('::error::' + $_.Line.Trim()) }
+          }
+          exit $code
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build-log
+          path: windows/build.log
+          if-no-files-found: ignore
