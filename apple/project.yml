@@ -54,6 +54,13 @@ targets:
         NSSupportsLiveActivities: true
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
+        # Динамический адрес API (значение задаётся per-config в settings).
+        IllUsionAPIBaseURL: $(ILLUSION_API_BASE_URL)
+        # Доступ к локальной сети для ping-замера задержки до серверов.
+        NSLocalNetworkUsageDescription: "Используется для измерения задержки до VPN-серверов."
+        # ATS: прод-трафик только по HTTPS, localhost для отладки разрешён.
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
     entitlements:
       path: IllUsionVPN/IllUsionVPN.entitlements
       properties:
