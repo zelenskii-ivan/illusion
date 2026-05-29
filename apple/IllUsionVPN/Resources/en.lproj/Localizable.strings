@@ -1,0 +1,86 @@
+/* Tabs */
+"Главная" = "Home";
+"Серверы" = "Servers";
+"Настройки" = "Settings";
+
+/* Connection state */
+"Не защищено" = "Not protected";
+"Подключение…" = "Connecting…";
+"Защищено" = "Protected";
+"Отключение…" = "Disconnecting…";
+"Ошибка" = "Error";
+
+/* Connect button */
+"Подключить" = "Connect";
+"Отключить" = "Disconnect";
+
+/* Home */
+"Приватность без компромиссов" = "Privacy without compromise";
+"Загрузка" = "Download";
+"Отдача" = "Upload";
+"Выберите сервер" = "Choose a server";
+"Kill Switch" = "Kill Switch";
+"Multi-hop" = "Multi-hop";
+"Обфускация" = "Obfuscation";
+
+/* Servers */
+"Страна или город" = "Country or city";
+"Самый быстрый сервер" = "Fastest server";
+
+/* Alerts */
+"Что-то пошло не так" = "Something went wrong";
+"Ок" = "OK";
+
+/* Login */
+"Войдите, чтобы продолжить" = "Sign in to continue";
+"Email" = "Email";
+"Пароль" = "Password";
+"Войти" = "Sign in";
+"Продолжая, вы принимаете Условия и Политику конфиденциальности." = "By continuing, you accept the Terms and Privacy Policy.";
+
+/* Settings sections */
+"Безопасность" = "Security";
+"Приватность" = "Privacy";
+"Сеть" = "Network";
+"О приложении" = "About";
+"Always-On" = "Always-On";
+"Блокировать трафик при разрыве туннеля" = "Block traffic if the tunnel drops";
+"Держать VPN всегда включённым" = "Keep VPN always on";
+"Авто на чужом Wi-Fi" = "Auto on untrusted Wi-Fi";
+"Подключаться на недоверенных сетях" = "Connect on untrusted networks";
+"Multi-hop (Double VPN)" = "Multi-hop (Double VPN)";
+"Маршрут через два сервера" = "Route through two servers";
+"Обфускация (анти-DPI)" = "Obfuscation (anti-DPI)";
+"Маскировать VPN-трафик" = "Mask VPN traffic";
+"Блокировка рекламы и трекеров" = "Block ads and trackers";
+"Фильтрация на уровне DNS" = "DNS-level filtering";
+"Выходной сервер (multi-hop)" = "Exit server (multi-hop)";
+"Не выбран" = "Not selected";
+"Кастомный DNS (необязательно)" = "Custom DNS (optional)";
+"Версия" = "Version";
+"Протокол" = "Protocol";
+"Выйти из аккаунта" = "Sign out";
+"Выходной сервер" = "Exit server";
+
+/* Premium / Paywall */
+"Перейти на Premium" = "Go Premium";
+"IllUsion Premium" = "IllUsion Premium";
+"Подписка активна" = "Subscription active";
+"Все локации, multi-hop, обфускация" = "All locations, multi-hop, obfuscation";
+"Разблокируйте все возможности" = "Unlock all features";
+"Все премиум-локации" = "All premium locations";
+"Обфускация трафика" = "Traffic obfuscation";
+"Максимальная скорость" = "Maximum speed";
+"Стриминг без блокировок" = "Unblocked streaming";
+"Оформить подписку" = "Subscribe";
+"Восстановить покупки" = "Restore purchases";
+"Подписка продлевается автоматически. Отмена в настройках App Store." = "Subscription renews automatically. Cancel anytime in App Store settings.";
+
+/* Onboarding */
+"Защита одним касанием" = "Protection in one tap";
+"Современный протокол WireGuard — быстрое и надёжное шифрование вашего трафика." = "Modern WireGuard protocol — fast and reliable encryption of your traffic.";
+"Серверы по всему миру" = "Servers around the world";
+"Выбирайте локацию вручную или доверьтесь авто-выбору самого быстрого сервера." = "Pick a location manually or let auto-select choose the fastest server.";
+"Kill Switch, Multi-hop и обфускация. Мы не ведём логи вашей активности." = "Kill Switch, Multi-hop and obfuscation. We keep no logs of your activity.";
+"Далее" = "Next";
+"Начать" = "Get started";

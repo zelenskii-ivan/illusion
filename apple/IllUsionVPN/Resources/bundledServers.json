@@ -1,0 +1,12 @@
+{
+  "servers": [
+    { "id": "nl-ams-01", "country": "Netherlands", "countryCode": "NL", "city": "Amsterdam", "flag": "🇳🇱", "host": "ams1.illusion.example", "port": 51820, "load": 18, "features": ["multihop-entry", "multihop-exit", "obfuscation", "p2p"], "tier": "free" },
+    { "id": "de-fra-01", "country": "Germany", "countryCode": "DE", "city": "Frankfurt", "flag": "🇩🇪", "host": "fra1.illusion.example", "port": 51820, "load": 34, "features": ["multihop-entry", "multihop-exit", "p2p"], "tier": "free" },
+    { "id": "us-nyc-01", "country": "United States", "countryCode": "US", "city": "New York", "flag": "🇺🇸", "host": "nyc1.illusion.example", "port": 51820, "load": 56, "features": ["multihop-exit", "streaming"], "tier": "premium" },
+    { "id": "jp-tyo-01", "country": "Japan", "countryCode": "JP", "city": "Tokyo", "flag": "🇯🇵", "host": "tyo1.illusion.example", "port": 51820, "load": 41, "features": ["multihop-exit", "streaming", "p2p"], "tier": "premium" },
+    { "id": "sg-sin-01", "country": "Singapore", "countryCode": "SG", "city": "Singapore", "flag": "🇸🇬", "host": "sin1.illusion.example", "port": 51820, "load": 27, "features": ["multihop-exit", "obfuscation"], "tier": "premium" },
+    { "id": "se-sto-01", "country": "Sweden", "countryCode": "SE", "city": "Stockholm", "flag": "🇸🇪", "host": "sto1.illusion.example", "port": 51820, "load": 12, "features": ["multihop-entry", "multihop-exit", "obfuscation", "p2p"], "tier": "free" },
+    { "id": "gb-lon-01", "country": "United Kingdom", "countryCode": "GB", "city": "London", "flag": "🇬🇧", "host": "lon1.illusion.example", "port": 51820, "load": 48, "features": ["multihop-exit", "streaming"], "tier": "premium" },
+    { "id": "fr-par-01", "country": "France", "countryCode": "FR", "city": "Paris", "flag": "🇫🇷", "host": "par1.illusion.example", "port": 51820, "load": 22, "features": ["multihop-exit", "p2p"], "tier": "free" }
+  ]
+}
