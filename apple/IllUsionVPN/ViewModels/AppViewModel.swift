@@ -86,7 +86,7 @@ final class AppViewModel: ObservableObject {
 
         // Демо-режим (симулятор): имитируем подключение без NetworkExtension.
         if AppEnvironment.isDemoMode {
-            await tunnel.connectDemo()
+            await tunnel.connectDemo(server: server)
             return
         }
 

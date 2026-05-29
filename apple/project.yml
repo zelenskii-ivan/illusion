@@ -36,11 +36,13 @@ targets:
     platform: iOS
     sources:
       - path: IllUsionVPN
+      - path: Shared
     info:
       path: IllUsionVPN/Info.plist
       properties:
         CFBundleDisplayName: IllUsion
         UILaunchScreen: {}
+        NSSupportsLiveActivities: true
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
     entitlements:
@@ -55,13 +57,14 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.illusion.vpn
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    dependencies:
+      - target: IllUsionWidgetExtension
     # ВКЛЮЧЕНИЕ РЕАЛЬНОГО VPN-ТУННЕЛЯ:
     # Раскомментируйте зависимость ниже, чтобы встроить расширение
     # PacketTunnelProvider (нужно реальное устройство + Team ID).
     # По умолчанию приложение запускается в демо-режиме (симулятор),
     # где UI работает полностью, а подключение имитируется.
     #
-    # dependencies:
     #   - target: PacketTunnelProvider
 
   PacketTunnelProvider:
@@ -87,6 +90,22 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.illusion.vpn.PacketTunnel
     dependencies:
       - package: WireGuardKit
+
+  IllUsionWidgetExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: IllUsionWidget
+      - path: Shared
+    info:
+      path: IllUsionWidget/Info.plist
+      properties:
+        CFBundleDisplayName: IllUsion
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.illusion.vpn.Widget
 
   IllUsionVPNTests:
     type: bundle.unit-test

@@ -5,13 +5,16 @@ import NetworkExtension
 /// WireGuard-конфиг расширению PacketTunnelProvider.
 @MainActor
 final class TunnelManager: ObservableObject {
-    @Published private(set) var state: ConnectionState = .disconnected
+    @Published private(set) var state: ConnectionState = .disconnected {
+        didSet { syncLiveActivity() }
+    }
     @Published private(set) var stats: TunnelStats = .init()
 
     private var manager: NETunnelProviderManager?
     private var statusObserver: NSObjectProtocol?
     private var isDemo = false
     private var demoTask: Task<Void, Never>?
+    private var activeServer: Server?
 
     private let tunnelBundleId = "com.illusion.vpn.PacketTunnel"
 
@@ -41,6 +44,7 @@ final class TunnelManager: ObservableObject {
     // MARK: - Публичный API
 
     func connect(session: Session, privateKey: String, server: Server, settings: AppSettings) async {
+        activeServer = server
         state = .connecting
         stats = .init()
         do {
@@ -110,8 +114,9 @@ final class TunnelManager: ObservableObject {
     // MARK: - Демо-режим (симулятор, без NetworkExtension)
 
     /// Имитирует полный цикл подключения с задержкой.
-    func connectDemo() async {
+    func connectDemo(server: Server? = nil) async {
         isDemo = true
+        activeServer = server
         state = .connecting
         stats = .init()
         demoTask?.cancel()
@@ -155,6 +160,22 @@ final class TunnelManager: ObservableObject {
             queue: .main
         ) { [weak self] _ in
             Task { @MainActor in self?.updateState(from: connection.status) }
+        }
+    }
+
+    // MARK: - Live Activity
+
+    private func syncLiveActivity() {
+        guard #available(iOS 16.1, *) else { return }
+        switch state {
+        case .connecting, .connected:
+            if let server = activeServer {
+                LiveActivityController.shared.start(server: server, state: state)
+            }
+        case .disconnecting:
+            LiveActivityController.shared.update(state: state)
+        case .disconnected, .failed:
+            LiveActivityController.shared.end()
         }
     }
 
