@@ -1,0 +1,40 @@
+# macOS / iCloud
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.env
+.env.local
+
+# Xcode / Swift
+build/
+DerivedData/
+*.xcuserstate
+*.xcscmblueprint
+xcuserdata/
+.swiftpm/
+Packages/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# .NET / Visual Studio
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+AppPackages/
+*.appx
+*.msix
+publish/
+
+# Secrets / keys
+*.pem
+*.key
+wg-keys/

@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Session",
+  "type": "object",
+  "required": ["sessionId", "interface", "peers", "expiresAt"],
+  "properties": {
+    "sessionId": { "type": "string" },
+    "multihop": { "type": "boolean" },
+    "interface": {
+      "type": "object",
+      "required": ["address", "dns", "mtu"],
+      "properties": {
+        "address": { "type": "array", "items": { "type": "string" } },
+        "dns": { "type": "array", "items": { "type": "string" } },
+        "mtu": { "type": "integer" }
+      }
+    },
+    "peers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["publicKey", "endpoint", "allowedIPs"],
+        "properties": {
+          "publicKey": { "type": "string" },
+          "endpoint": { "type": "string" },
+          "allowedIPs": { "type": "array", "items": { "type": "string" } },
+          "persistentKeepalive": { "type": "integer" }
+        }
+      }
+    },
+    "expiresAt": { "type": "integer" }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Server",
+  "type": "object",
+  "required": ["id", "country", "countryCode", "city", "host", "port", "load", "tier"],
+  "properties": {
+    "id": { "type": "string" },
+    "country": { "type": "string" },
+    "countryCode": { "type": "string", "minLength": 2, "maxLength": 2 },
+    "city": { "type": "string" },
+    "flag": { "type": "string" },
+    "host": { "type": "string" },
+    "port": { "type": "integer", "minimum": 1, "maximum": 65535 },
+    "load": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "features": {
+      "type": "array",
+      "items": {
+        "enum": ["multihop-entry", "multihop-exit", "obfuscation", "p2p", "streaming"]
+      }
+    },
+    "tier": { "enum": ["free", "premium"] }
+  }
+}
