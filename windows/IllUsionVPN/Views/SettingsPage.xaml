@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="IllUsionVPN.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer>
+        <ScrollViewer.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Color="#0D1221" Offset="0" />
+                <GradientStop Color="#05080F" Offset="1" />
+            </LinearGradientBrush>
+        </ScrollViewer.Background>
+
+        <StackPanel Padding="24" Spacing="16" MaxWidth="640" HorizontalAlignment="Left">
+            <TextBlock Text="Настройки" FontSize="28" FontWeight="Bold" Foreground="White" />
+
+            <TextBlock Text="БЕЗОПАСНОСТЬ" Foreground="#80FFFFFF" FontSize="12" FontWeight="SemiBold" />
+            <ToggleSwitch x:Name="KillSwitch" Header="Kill Switch" Foreground="White" Toggled="OnToggle" />
+            <ToggleSwitch x:Name="AlwaysOn" Header="Always-On" Foreground="White" Toggled="OnToggle" />
+            <ToggleSwitch x:Name="AutoWifi" Header="Авто на чужом Wi-Fi" Foreground="White" Toggled="OnToggle" />
+
+            <TextBlock Text="ПРИВАТНОСТЬ" Foreground="#80FFFFFF" FontSize="12" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <ToggleSwitch x:Name="Multihop" Header="Multi-hop (Double VPN)" Foreground="White" Toggled="OnToggle" />
+            <ToggleSwitch x:Name="Obfuscation" Header="Обфускация (анти-DPI)" Foreground="White" Toggled="OnToggle" />
+            <ToggleSwitch x:Name="AdBlock" Header="Блокировка рекламы и трекеров" Foreground="White" Toggled="OnToggle" />
+
+            <TextBlock Text="СЕТЬ" Foreground="#80FFFFFF" FontSize="12" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <TextBox x:Name="CustomDns" Header="Кастомный DNS (необязательно)"
+                     PlaceholderText="1.1.1.1" TextChanged="OnDnsChanged" />
+
+            <TextBlock Text="О приложении" Foreground="#80FFFFFF" FontSize="12" FontWeight="SemiBold" Margin="0,12,0,0" />
+            <TextBlock Text="Версия 0.1.0 · Протокол WireGuard" Foreground="#99FFFFFF" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

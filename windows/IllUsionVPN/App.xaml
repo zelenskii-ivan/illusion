@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application
+    x:Class="IllUsionVPN.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Палитра IllUsion -->
+            <Color x:Key="AccentColor">#5CC7FC</Color>
+            <Color x:Key="AccentSecondaryColor">#8C6BFA</Color>
+            <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+            <SolidColorBrush x:Key="SuccessBrush" Color="#33D98C" />
+            <SolidColorBrush x:Key="DangerBrush" Color="#FA5A66" />
+            <SolidColorBrush x:Key="CardBrush" Color="#15FFFFFF" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
