@@ -5,6 +5,8 @@ options:
     iOS: "16.0"
   createIntermediateGroups: true
   developmentLanguage: ru
+  # objectVersion 56 → проект открывается в Xcode 14/15/16 (избегаем формата 77).
+  objectVersion: 56
 
 configs:
   Debug: debug
