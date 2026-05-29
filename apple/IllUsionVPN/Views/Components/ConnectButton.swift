@@ -50,5 +50,12 @@ struct ConnectButton: View {
         .buttonStyle(.plain)
         .disabled(state.isBusy)
         .onAppear { pulse = true }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(state.isConnected ? "Отключить VPN" : "Подключить VPN")
+        .accessibilityValue(state.title)
+        .accessibilityHint(state.isConnected
+            ? "Дважды коснитесь, чтобы отключить защиту"
+            : "Дважды коснитесь, чтобы включить защиту")
+        .accessibilityAddTraits(.isButton)
     }
 }

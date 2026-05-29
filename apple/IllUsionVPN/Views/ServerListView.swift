@@ -123,6 +123,19 @@ private struct ServerRow: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(server.city), \(server.country)")
+        .accessibilityValue(accessibilityValue)
+        .accessibilityHint(locked ? "Премиум-сервер. Дважды коснитесь, чтобы оформить подписку" : "")
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
+    }
+
+    private var accessibilityValue: String {
+        var parts: [String] = []
+        if let ms = server.latencyMs { parts.append("задержка \(ms) миллисекунд") }
+        parts.append("нагрузка \(server.loadLabel)")
+        if locked { parts.append("заблокировано") }
+        return parts.joined(separator: ", ")
     }
 
     private func latencyColor(_ ms: Int) -> Color {

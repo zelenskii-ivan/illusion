@@ -59,6 +59,9 @@ struct HomeView: View {
                 .foregroundStyle(tint)
         }
         .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(title)
+        .accessibilityValue(value)
     }
 
     private var header: some View {
@@ -97,6 +100,9 @@ struct HomeView: View {
         .padding(.vertical, 10)
         .background(Capsule().fill(Theme.card))
         .overlay(Capsule().stroke(Theme.cardStroke, lineWidth: 1))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Статус подключения")
+        .accessibilityValue(viewModel.state.title)
     }
 
     private var selectedServerCard: some View {
@@ -123,6 +129,10 @@ struct HomeView: View {
             .glassCard()
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Выбранный сервер")
+        .accessibilityValue(viewModel.selectedServer.map { "\($0.city), \($0.country)" } ?? "Не выбран")
+        .accessibilityHint("Дважды коснитесь, чтобы выбрать другой сервер")
     }
 
     private var quickToggles: some View {
@@ -183,5 +193,9 @@ private struct QuickToggle: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(title)
+        .accessibilityValue(isOn ? "Включено" : "Выключено")
+        .accessibilityAddTraits(isOn ? [.isButton, .isSelected] : .isButton)
     }
 }
