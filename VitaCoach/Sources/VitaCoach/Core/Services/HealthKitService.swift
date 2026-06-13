@@ -8,7 +8,11 @@ import HealthKit
 @MainActor
 final class HealthKitService {
     #if canImport(HealthKit)
-    private let store = HKHealthStore()
+    // Ленивая инициализация: HKHealthStore не создаётся на старте приложения.
+    // Иначе на реальном устройстве без HealthKit-entitlement обращение к
+    // HealthKit при запуске роняет приложение (в симуляторе entitlements не
+    // проверяются, поэтому там всё работало).
+    private lazy var store = HKHealthStore()
     #endif
 
     var isAvailable: Bool {
