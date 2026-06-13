@@ -1,0 +1,52 @@
+name: VitaCoachoptions:
+  bundleIdPrefix: com.illusion
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+
+targets:
+  VitaCoach:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Sources
+      - path: Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.illusion.vitacoach
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: NO
+        ENABLE_PREVIEWS: YES
+        SWIFT_EMIT_LOC_STRINGS: YES
+        CODE_SIGNING_ALLOWED: NO
+    info:
+      path: Resources/Info.plist
+      properties:
+        CFBundleDisplayName: VitaCoach
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        UILaunchScreen:
+          UIColorName: "LaunchBackground"
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSHealthShareUsageDescription: "VitaCoach анализирует ваши показатели здоровья (шаги, пульс, сон, энергия), чтобы давать персональные рекомендации."
+        NSHealthUpdateUsageDescription: "VitaCoach сохраняет результаты ваших тренировок в Здоровье."
+        NSCameraUsageDescription: "Камера нужна для анализа техники выполнения упражнений в реальном времени."
+        NSPhotoLibraryUsageDescription: "Доступ к видео нужен, чтобы анализировать технику выполнения упражнений по записи."
+        NSMotionUsageDescription: "Данные движения помогают точнее оценивать активность."
