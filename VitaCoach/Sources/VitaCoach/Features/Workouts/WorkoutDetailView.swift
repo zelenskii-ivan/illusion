@@ -3,6 +3,8 @@ import SwiftUI
 struct WorkoutDetailView: View {
     let workout: PlannedWorkout
     @State private var showLog = false
+    @State private var celebrate = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ScrollView {
@@ -14,8 +16,10 @@ struct WorkoutDetailView: View {
                             .font(.subheadline).foregroundStyle(Theme.textSecondary)
                     }
                 }
+                .appearCascade(0, reduceMotion: reduceMotion)
 
-                ForEach(workout.exercises.sorted { $0.order < $1.order }) { exercise in
+                ForEach(Array(workout.exercises.sorted { $0.order < $1.order }.enumerated()),
+                        id: \.element.id) { index, exercise in
                     Card {
                         VStack(alignment: .leading, spacing: 8) {
                             HStack {
@@ -33,6 +37,7 @@ struct WorkoutDetailView: View {
                             }
                         }
                     }
+                    .appearCascade(index + 1, reduceMotion: reduceMotion)
                 }
 
                 Button {
@@ -48,8 +53,14 @@ struct WorkoutDetailView: View {
         .navigationTitle(workout.title)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showLog) {
-            LogSessionView(suggested: workout)
+            LogSessionView(suggested: workout, onSaved: { celebrate = true })
         }
+        .overlay {
+            if celebrate {
+                CelebrationView { withAnimation(.easeInOut(duration: 0.3)) { celebrate = false } }
+            }
+        }
+        .animation(.easeInOut(duration: 0.3), value: celebrate)
     }
 
     private func setsRepsText(_ e: PlannedExercise) -> String {

@@ -78,13 +78,28 @@ struct ProgressRing: View {
     var tint: Color = Theme.accent
     var lineWidth: CGFloat = 8
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var animated: Double = 0
+    private var clamped: Double { min(max(progress, 0), 1) }
+
     var body: some View {
         ZStack {
             Circle().stroke(tint.opacity(0.18), lineWidth: lineWidth)
             Circle()
-                .trim(from: 0, to: min(max(progress, 0), 1))
+                .trim(from: 0, to: animated)
                 .stroke(tint, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
+                // Свечение при достижении цели.
+                .shadow(color: clamped >= 1 ? tint.opacity(0.8) : .clear,
+                        radius: clamped >= 1 ? lineWidth * 0.9 : 0)
+        }
+        .onAppear { animate(to: clamped) }
+        .onChange(of: clamped) { _, new in animate(to: new) }
+    }
+
+    private func animate(to value: Double) {
+        withAnimation(reduceMotion ? .easeOut(duration: 0.3) : Motion.spring) {
+            animated = value
         }
     }
 }

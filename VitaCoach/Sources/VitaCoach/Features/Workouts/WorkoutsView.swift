@@ -9,6 +9,9 @@ struct WorkoutsView: View {
     @Query(sort: \WorkoutSession.date, order: .reverse) private var sessions: [WorkoutSession]
 
     @State private var showLogSheet = false
+    @State private var celebrate = false
+    @Namespace private var hero
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var activePlan: WorkoutPlan? { plans.first { $0.isActive } ?? plans.first }
 
@@ -18,13 +21,17 @@ struct WorkoutsView: View {
                 VStack(spacing: 16) {
                     if let plan = activePlan {
                         planCard(plan)
-                        ForEach(plan.workouts.sorted { $0.order < $1.order }) { workout in
+                        ForEach(Array(plan.workouts.sorted { $0.order < $1.order }.enumerated()),
+                                id: \.element.id) { index, workout in
                             NavigationLink {
                                 WorkoutDetailView(workout: workout)
+                                    .heroZoom(id: workout.id, in: hero)
                             } label: {
                                 WorkoutRow(workout: workout)
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(PressableCardStyle())
+                            .heroSource(id: workout.id, in: hero)
+                            .appearCascade(index + 1, reduceMotion: reduceMotion)
                         }
                     } else {
                         EmptyStateView(systemImage: "dumbbell.fill",
@@ -52,8 +59,14 @@ struct WorkoutsView: View {
                 }
             }
             .sheet(isPresented: $showLogSheet) {
-                LogSessionView(suggested: nil)
+                LogSessionView(suggested: nil, onSaved: { celebrate = true })
             }
+            .overlay {
+                if celebrate {
+                    CelebrationView { withAnimation(.easeInOut(duration: 0.3)) { celebrate = false } }
+                }
+            }
+            .animation(.easeInOut(duration: 0.3), value: celebrate)
         }
     }
 

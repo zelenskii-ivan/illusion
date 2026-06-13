@@ -33,11 +33,19 @@ struct CoachView: View {
                                 .id(message.id)
                             }
                             if isSending {
-                                HStack { ProgressView().tint(Theme.accent); Spacer() }
-                                    .padding(.horizontal)
+                                HStack {
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .fill(Theme.surface)
+                                        .frame(width: 180, height: 40)
+                                        .shimmering()
+                                    Spacer(minLength: 40)
+                                }
+                                .padding(.horizontal)
+                                .transition(.opacity)
                             }
                         }
                         .padding()
+                        .animation(.easeInOut(duration: 0.2), value: isSending)
                     }
                     .onChange(of: messages.count) { _, _ in
                         if let last = messages.last { withAnimation { proxy.scrollTo(last.id, anchor: .bottom) } }

@@ -2,14 +2,50 @@ import Foundation
 
 enum LLMProvider: String, Codable, CaseIterable, Identifiable {
     case mock
+    case groq
+    case openRouter
     case openAICompatible
+
     var id: String { rawValue }
+
     var title: String {
         switch self {
-        case .mock: return "Локальный (демо)"
-        case .openAICompatible: return "OpenAI-совместимый API"
+        case .mock: return "Локальный (демо, офлайн)"
+        case .groq: return "Groq · бесплатно"
+        case .openRouter: return "OpenRouter · есть бесплатные"
+        case .openAICompatible: return "Свой OpenAI-совместимый"
         }
     }
+
+    /// Базовый URL пресета (nil — задаёт пользователь вручную).
+    var defaultBaseURL: String? {
+        switch self {
+        case .groq: return "https://api.groq.com/openai/v1"
+        case .openRouter: return "https://openrouter.ai/api/v1"
+        default: return nil
+        }
+    }
+
+    /// Бесплатная модель по умолчанию для пресета.
+    var defaultModel: String? {
+        switch self {
+        case .groq: return "llama-3.3-70b-versatile"
+        case .openRouter: return "meta-llama/llama-3.3-70b-instruct:free"
+        default: return nil
+        }
+    }
+
+    /// Где бесплатно получить API-ключ.
+    var apiKeyURL: URL? {
+        switch self {
+        case .groq: return URL(string: "https://console.groq.com/keys")
+        case .openRouter: return URL(string: "https://openrouter.ai/keys")
+        default: return nil
+        }
+    }
+
+    var requiresAPIKey: Bool { self != .mock }
+    var isCustomEndpoint: Bool { self == .openAICompatible }
 }
 
 /// Пользовательские настройки, включая конфигурацию LLM-провайдера.

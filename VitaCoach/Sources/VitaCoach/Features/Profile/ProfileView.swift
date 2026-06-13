@@ -12,6 +12,13 @@ struct ProfileView: View {
 
     @State private var exportURL: URL?
     @State private var exportCount: Int = 0
+    @State private var connection: ConnectionStatus = .idle
+
+    enum ConnectionStatus: Equatable {
+        case idle, testing
+        case ok(String)
+        case failed(String)
+    }
 
     var body: some View {
         NavigationStack {
@@ -66,33 +73,100 @@ struct ProfileView: View {
 
     private var llmSection: some View {
         Section {
-            Picker("Провайдер", selection: Binding(
-                get: { container.settings.llmProvider },
-                set: { container.settings.llmProvider = $0 }
-            )) {
+            Picker("Провайдер", selection: providerBinding) {
                 ForEach(LLMProvider.allCases) { Text($0.title).tag($0) }
             }
-            if container.settings.llmProvider == .openAICompatible {
-                TextField("Base URL", text: Binding(
-                    get: { container.settings.llmBaseURL },
-                    set: { container.settings.llmBaseURL = $0 }
-                ))
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                TextField("Модель", text: Binding(
-                    get: { container.settings.llmModel },
-                    set: { container.settings.llmModel = $0 }
-                ))
-                .autocorrectionDisabled()
-                SecureField("API-ключ", text: Binding(
-                    get: { container.settings.llmAPIKey },
-                    set: { container.settings.llmAPIKey = $0 }
-                ))
+
+            let provider = container.settings.llmProvider
+
+            if provider.isCustomEndpoint {
+                TextField("Base URL", text: settingBinding(\.llmBaseURL))
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+            }
+
+            if provider != .mock {
+                TextField("Модель", text: settingBinding(\.llmModel))
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                SecureField("API-ключ", text: settingBinding(\.llmAPIKey))
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+
+                if let url = provider.apiKeyURL {
+                    Link(destination: url) {
+                        Label("Получить бесплатный ключ", systemImage: "key.fill")
+                    }
+                }
+
+                Button { testConnection() } label: {
+                    HStack {
+                        Label("Проверить подключение", systemImage: "bolt.horizontal.circle")
+                        Spacer()
+                        connectionIndicator
+                    }
+                }
+                .disabled(connection == .testing)
+
+                if case let .failed(message) = connection {
+                    Text(message).font(.caption).foregroundStyle(.red)
+                } else if case let .ok(reply) = connection {
+                    Text("Ответ модели: \(reply)").font(.caption).foregroundStyle(.secondary)
+                }
             }
         } header: {
             Text("ИИ-модель")
         } footer: {
-            Text("Демо-модель работает офлайн. Для реальных ответов укажите OpenAI-совместимый эндпоинт — туда же можно направить вашу дообученную модель.")
+            Text("Демо-модель работает офлайн. **Groq** — бесплатный и быстрый (нужен бесплатный ключ, без карты). **OpenRouter** даёт доступ к бесплатным моделям. Можно указать и свой OpenAI-совместимый эндпоинт — туда же направить дообученную модель.")
+        }
+    }
+
+    @ViewBuilder
+    private var connectionIndicator: some View {
+        switch connection {
+        case .idle: EmptyView()
+        case .testing: ProgressView()
+        case .ok: Image(systemName: "checkmark.circle.fill").foregroundStyle(.green)
+        case .failed: Image(systemName: "xmark.circle.fill").foregroundStyle(.red)
+        }
+    }
+
+    /// Биндинг к произвольному строковому полю настроек.
+    private func settingBinding(_ keyPath: WritableKeyPath<AppSettings, String>) -> Binding<String> {
+        Binding(
+            get: { container.settings[keyPath: keyPath] },
+            set: { container.settings[keyPath: keyPath] = $0 }
+        )
+    }
+
+    /// Биндинг провайдера: при выборе пресета сразу подставляет его базовый URL и модель.
+    private var providerBinding: Binding<LLMProvider> {
+        Binding(
+            get: { container.settings.llmProvider },
+            set: { newValue in
+                container.settings.llmProvider = newValue
+                if let url = newValue.defaultBaseURL { container.settings.llmBaseURL = url }
+                if let model = newValue.defaultModel { container.settings.llmModel = model }
+                connection = .idle
+            }
+        )
+    }
+
+    private func testConnection() {
+        container.updateLLMProvider()      // пересобрать сервис из текущих настроек
+        connection = .testing
+        let llm = container.llm
+        Task {
+            do {
+                let reply = try await llm.complete(messages: [
+                    LLMMessage(role: .system, content: "Ты — проверка связи. Ответь одним коротким словом."),
+                    LLMMessage(role: .user, content: "Ответь: готово")
+                ])
+                let trimmed = reply.trimmingCharacters(in: .whitespacesAndNewlines)
+                connection = .ok(String(trimmed.prefix(60)))
+            } catch {
+                connection = .failed(error.localizedDescription)
+            }
         }
     }
 

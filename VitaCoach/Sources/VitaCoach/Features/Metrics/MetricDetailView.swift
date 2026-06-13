@@ -24,6 +24,7 @@ struct MetricDetailView: View {
                         Text(valueText(summary.latest))
                             .font(.system(size: 40, weight: .bold))
                             .foregroundStyle(Theme.textPrimary)
+                            .contentTransition(.numericText())
                         if let target = type.dailyTarget {
                             Text("Цель: \(Int(target)) \(type.unit)")
                                 .font(.subheadline).foregroundStyle(Theme.textSecondary)
@@ -49,6 +50,7 @@ struct MetricDetailView: View {
                             }
                         }
                         .frame(height: 220)
+                        .chartReveal()
                     }
                 }
 

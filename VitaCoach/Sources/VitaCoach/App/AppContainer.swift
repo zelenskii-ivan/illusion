@@ -47,7 +47,9 @@ final class AppContainer {
     func seedInitialDataIfNeeded() {
         guard !didSeed else { return }
         didSeed = true
-        Seeder.seedIfNeeded(context: modelContainer.mainContext, knowledgeBase: knowledgeBase)
+        let context = modelContainer.mainContext
+        Seeder.seedIfNeeded(context: context, knowledgeBase: knowledgeBase)
+        Seeder.seedWorkoutPlanIfNeeded(context: context, planner: planner)
     }
 
     func updateLLMProvider() {
@@ -56,18 +58,17 @@ final class AppContainer {
     }
 
     private static func makeLLM(for settings: AppSettings) -> any LLMService {
-        switch settings.llmProvider {
-        case .mock:
-            return MockLLMService()
-        case .openAICompatible:
-            return OpenAICompatibleLLMService(
-                configuration: .init(
-                    baseURL: settings.llmBaseURL,
-                    apiKey: settings.llmAPIKey,
-                    model: settings.llmModel
-                )
+        // Демо-модель работает офлайн; все остальные провайдеры (Groq,
+        // OpenRouter, свой эндпоинт) — это OpenAI-совместимый Chat Completions.
+        // Базовый URL и модель уже подставлены пресетом в настройках.
+        guard settings.llmProvider != .mock else { return MockLLMService() }
+        return OpenAICompatibleLLMService(
+            configuration: .init(
+                baseURL: settings.llmBaseURL,
+                apiKey: settings.llmAPIKey,
+                model: settings.llmModel
             )
-        }
+        )
     }
 
     private static func makeModelContainer() -> ModelContainer {

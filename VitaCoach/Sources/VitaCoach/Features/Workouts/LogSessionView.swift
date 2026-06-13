@@ -3,6 +3,7 @@ import SwiftData
 
 struct LogSessionView: View {
     let suggested: PlannedWorkout?
+    var onSaved: () -> Void = {}
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
 
@@ -71,6 +72,7 @@ struct LogSessionView: View {
             context.insert(MetricSample(type: .activeEnergy, value: cal, date: .now, source: .manual))
         }
         try? context.save()
+        onSaved()
         dismiss()
     }
 }

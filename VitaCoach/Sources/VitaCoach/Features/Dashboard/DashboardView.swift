@@ -10,6 +10,7 @@ struct DashboardView: View {
 
     @State private var showProfile = false
     @State private var focusMode: FocusMode = .personal
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var profile: UserProfile? { profiles.first }
 
@@ -29,14 +30,14 @@ struct DashboardView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    header
-                    focusSection
-                    ringsSection
+                    header.appearCascade(0, reduceMotion: reduceMotion)
+                    focusSection.appearCascade(1, reduceMotion: reduceMotion)
+                    ringsSection.appearCascade(2, reduceMotion: reduceMotion)
                     if let workout = todaysWorkout {
-                        todaysWorkoutCard(workout)
+                        todaysWorkoutCard(workout).appearCascade(3, reduceMotion: reduceMotion)
                     }
-                    insightCard
-                    sourcesCard
+                    insightCard.appearCascade(4, reduceMotion: reduceMotion)
+                    sourcesCard.appearCascade(5, reduceMotion: reduceMotion)
                 }
                 .padding()
             }
@@ -87,7 +88,8 @@ struct DashboardView: View {
                         tint: mode.tint,
                         isOn: focusMode == mode
                     ) {
-                        focusMode = mode
+                        Haptics.selection()
+                        withAnimation(Motion.spring) { focusMode = mode }
                     }
                 }
             }
@@ -187,6 +189,7 @@ struct DashboardMetricCard: View {
                 Text(formatted(summary.latest))
                     .font(.title3.bold())
                     .foregroundStyle(Theme.textPrimary)
+                    .contentTransition(.numericText())
                 Text(summary.type.title)
                     .font(.caption)
                     .foregroundStyle(Theme.textSecondary)

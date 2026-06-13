@@ -11,6 +11,16 @@ enum Seeder {
         try? context.save()
     }
 
+    /// Создаёт стартовый персональный план тренировок, если его ещё нет,
+    /// чтобы дашборд и вкладка «Тренировки» не были пустыми на первом запуске.
+    static func seedWorkoutPlanIfNeeded(context: ModelContext, planner: WorkoutPlanner) {
+        let count = (try? context.fetchCount(FetchDescriptor<WorkoutPlan>())) ?? 0
+        guard count == 0,
+              let profile = try? context.fetch(FetchDescriptor<UserProfile>()).first else { return }
+        context.insert(planner.makePlan(for: profile))
+        try? context.save()
+    }
+
     private static func seedProfile(_ context: ModelContext) {
         let count = (try? context.fetchCount(FetchDescriptor<UserProfile>())) ?? 0
         guard count == 0 else { return }
